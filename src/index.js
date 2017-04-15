@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import routes from './routes';
+import promise from 'redux-promise';
 
 import {Router, browserHistory} from 'react-router';
 //browserHistory is an object tells react router how to interpret changes to the url, it tells it to update after a change in protocol
@@ -11,7 +12,7 @@ import {Router, browserHistory} from 'react-router';
 //memoryHistory doesnot track url at all. Look it up
 
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
