@@ -16,7 +16,7 @@ class PostsNew extends Component {
             <form onSubmit = {handleSubmit(this.props.createPost)}>
             {/*handleSubmit will call createPost with the contents of the input fields as an object passed on to createPost as a parameter*/}
                 <h3>Create a new post</h3>
-                <div className="form-group">
+                <div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
                     <label>Title</label>
                     <input type="text" className="form-control" {...title}/>
                     <div className="text-help">
@@ -25,14 +25,22 @@ class PostsNew extends Component {
                     </div>
                 </div>
 
-                <div className="form-group">
+                <div className={`form-group ${categories.touched && categories.invalid ? 'has-danger' : ''}`}>
                     <label>Categories</label>
                     <input type="text" className="form-control" {...categories}/>
+                    <div className="text-help">
+                        {categories.touched ? categories.error : ''}
+                        {/*if categories.touched is true return categories.error else return ""*/}
+                    </div>
                 </div>
 
-                <div className="form-group">
+                <div className={`form-group ${content.touched && content.invalid ? 'has-danger' : ''}`}>
                     <label>Content</label>
                     <textarea className="form-control" {...content}/>
+                    <div className="text-help">
+                        {content.touched ? content.error : ''}
+                        {/*if content.touched is true return content.error else return ""*/}
+                    </div>
                 </div>
 
                 <button type="submit" className="btn btn-primary">Submit</button>
@@ -46,6 +54,12 @@ function validate(values){
     const errors = {};
     if (!values.title){ //check condition
         errors.title = 'Enter a title';//error message
+    }
+    if (!values.categories){ //check condition
+        errors.categories = 'Enter categories';//error message
+    }
+    if (!values.content){ //check condition
+        errors.content = 'Enter some content';//error message
     }
     return errors;
 }
