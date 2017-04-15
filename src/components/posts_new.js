@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {reduxForm} from 'redux-form';
 //we will use it to wrap PostsNew component at the bottom
 import {createPost} from "../actions/index";
-//we imported the action creator and we can use redux form to connect instead of the connect function we did before line 40
+//we imported the action creator and we can use redux form to connect instead of the connect function we did before line 54
 
 class PostsNew extends Component {
     render (){
@@ -14,11 +14,15 @@ class PostsNew extends Component {
 
         return(
             <form onSubmit = {handleSubmit(this.props.createPost)}>
-            {/*handleSubmit will call createPost with the contents of the input fields as an object passed on to createPostas a parameter*/}
+            {/*handleSubmit will call createPost with the contents of the input fields as an object passed on to createPost as a parameter*/}
                 <h3>Create a new post</h3>
                 <div className="form-group">
                     <label>Title</label>
                     <input type="text" className="form-control" {...title}/>
+                    <div className="text-help">
+                        {title.touched ? title.error : ''}
+                        {/*if title.touched is true return title.error else return ""*/}
+                    </div>
                 </div>
 
                 <div className="form-group">
@@ -37,12 +41,22 @@ class PostsNew extends Component {
     }
 }
 
+function validate(values){
+    //form validator, prevents submission if invalid
+    const errors = {};
+    if (!values.title){ //check condition
+        errors.title = 'Enter a title';//error message
+    }
+    return errors;
+}
+
 
 // connect: first argument is mapStateToProps, 2nd is mapDispatchToProps but
 //reduxForm: 1st arg is form config, 2nd is mapStateToProps and 3rd is mapDispatchToProps
 
 export default reduxForm({
     form: "PostsNewForm", //just needs to be unique, may not match comp name
-    fields: ['title','categories','content']//tells redux form about the pices of data the form conatins
+    fields: ['title','categories','content'],//tells redux form about the pices of data the form conatins
+    validate
 },null,{createPost}) (PostsNew);
 //user types something in...record it on application state
